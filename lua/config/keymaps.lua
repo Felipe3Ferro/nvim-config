@@ -1,5 +1,15 @@
 local builtin = require("telescope.builtin")
 
+-- jj no insert mode funciona como Esc
+vim.keymap.set("i", "jj", "<Esc>", {})
+
+-- Recarrega o arquivo automaticamente quando ele muda no disco
+vim.opt.autoread = true
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+  command = "checktime"
+})
+
+-- Comandos de extensões
 -- Ctrl+P: busca arquivos pelo nome
 vim.keymap.set("n", "<C-p>", builtin.find_files, {})
 
@@ -23,3 +33,6 @@ vim.keymap.set("n", "<C-h>", "<C-w>h", {})
 vim.keymap.set("n", "<C-l>", "<C-w>l", {})
 vim.keymap.set("n", "<C-j>", "<C-w>j", {})
 vim.keymap.set("n", "<C-k>", "<C-w>k", {})
+
+-- Espaço + ai: abre o opencode na lateral direita
+vim.keymap.set("n", "<leader>ai", "<Cmd>botright vsplit | terminal opencode<CR>", {})
