@@ -9,7 +9,6 @@ return {
 
       local Terminal = require("toggleterm.terminal").Terminal
 
-      -- Terminal normal fixo na parte de baixo com altura menor
       local terminal = Terminal:new({
         direction = "horizontal",
         size = 10,
@@ -20,12 +19,13 @@ return {
         end,
       })
 
-      -- Opencode fixo na direita
       local opencode = Terminal:new({
         cmd = "opencode",
         direction = "vertical",
         size = 60,
         hidden = true,
+        -- abre sempre no diretório do projeto atual
+        dir = "git_dir",
         on_open = function()
           vim.cmd("wincmd L")
           vim.cmd("vertical resize 60")
