@@ -1,38 +1,61 @@
 local builtin = require("telescope.builtin")
 
--- jj no insert mode funciona como Esc
+-- ============================================================
+-- MODOS
+-- ============================================================
 vim.keymap.set("i", "jj", "<Esc>", {})
+vim.keymap.set("t", "jj", "<C-\\><C-n>", {})
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", {})
 
--- Recarrega o arquivo automaticamente quando ele muda no disco
+-- ============================================================
+-- RECARREGAMENTO AUTOMÁTICO DE ARQUIVOS
+-- ============================================================
 vim.opt.autoread = true
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
   command = "checktime"
 })
 
--- Comandos de extensões
--- Ctrl+P: busca arquivos pelo nome
-vim.keymap.set("n", "<C-p>", builtin.find_files, {})
-
--- Espaço+fg: busca texto dentro dos arquivos
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
-
--- Espaço+e: abre a árvore e destaca o arquivo atual
-vim.keymap.set("n", "<leader>e", "<Cmd>Neotree filesystem reveal left<CR>", {})
-
--- Ctrl+N: abre/fecha a árvore
-vim.keymap.set("n", "<C-n>", "<Cmd>Neotree toggle<CR>", {})
-
--- Abre o terminal em uma janela horizontal na parte de baixo
-vim.keymap.set("n", "<leader>t", "<Cmd>botright 15split | terminal<CR>", {})
-
--- Sai do modo insert do terminal com Escape
-vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", {})
-
--- Navegação entre janelas com Ctrl + setas
+-- ============================================================
+-- NAVEGAÇÃO ENTRE JANELAS
+-- ============================================================
 vim.keymap.set("n", "<C-h>", "<C-w>h", {})
 vim.keymap.set("n", "<C-l>", "<C-w>l", {})
 vim.keymap.set("n", "<C-j>", "<C-w>j", {})
 vim.keymap.set("n", "<C-k>", "<C-w>k", {})
 
--- Espaço + ai: abre o opencode na lateral direita
-vim.keymap.set("n", "<leader>ai", "<Cmd>botright vsplit | terminal opencode<CR>", {})
+-- ============================================================
+-- MOVER LINHAS
+-- ============================================================
+vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { noremap = true, silent = true })
+vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { noremap = true, silent = true })
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
+
+-- ============================================================
+-- TELESCOPE
+-- ============================================================
+vim.keymap.set("n", "<C-p>", builtin.find_files, {})
+vim.keymap.set("n", "<leader>fg", builtin.live_grep, {})
+
+-- ============================================================
+-- NEO-TREE
+-- ============================================================
+vim.keymap.set("n", "<leader>e", "<Cmd>Neotree filesystem reveal left<CR>", {})
+vim.keymap.set("n", "<C-n>", "<Cmd>Neotree toggle<CR>", {})
+
+-- ============================================================
+-- TERMINAL (gerenciado pelo toggleterm)
+-- ============================================================
+-- Ctrl+T: abre/fecha o terminal de baixo
+-- Espaço+ai: abre/fecha o opencode na direita
+-- (esses atalhos estão definidos no plugins/toggleterm.lua)
+
+-- ============================================================
+-- LAYOUT INICIAL
+-- ============================================================
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    vim.cmd("Neotree filesystem reveal left")
+    vim.cmd("wincmd l")
+  end
+})
